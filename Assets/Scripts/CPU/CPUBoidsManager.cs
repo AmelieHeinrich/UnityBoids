@@ -25,6 +25,7 @@ public class CPUBoidsManager : MonoBehaviour
     [SerializeField] public int BoidCount = 3000;
     [SerializeField] public GameObject BoidPrefab;
     [SerializeField] public GameObjectPool BoidPool;
+    [SerializeField] public LimitArea BoidLimitArea;
     private List<Boid> Boids;
 
     [SerializeField] public float NeighbourRadius = 6f;
@@ -130,6 +131,9 @@ public class CPUBoidsManager : MonoBehaviour
             Vector3 force = SeparationWeight * separation
                           + AlignmentWeight  * alignment  * boidSpecificAliWeight
                           + CohesionWeight   * cohesion   * boidSpecificCohWeight;
+
+            Vector3 repulsion = BoidLimitArea.GetRepulsionForce(currBoid.Position);
+            currBoid.Velocity += repulsion * Time.deltaTime;
 
             // Limit force 
             if (force.magnitude > MaxForce)
