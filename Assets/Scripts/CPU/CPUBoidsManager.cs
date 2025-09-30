@@ -17,6 +17,17 @@ public class CPUBoidsManager : MonoBehaviour
     [SerializeField] public GameObjectPool BoidPool;
     private List<Boid> Boids;
 
+    [SerializeField] public float NeighbourRadius = 6f;
+    [SerializeField] public float SeparationRadius = 3f;
+    [SerializeField] public float MaxSpeed = 2f;
+    [SerializeField] public float MaxForce = 0.03f;
+    [SerializeField] public float SeparationWeight = 0.15f;
+    [SerializeField] public float AlignmentWeight = 0.02f;
+    [SerializeField] public float CohesionWeight = 0.003f;
+    [SerializeField] public int   MaxSeparationNeighbours = 20;
+    [SerializeField] public int   MaxAlignmentNeighbours = 10;
+    [SerializeField] public int   MaxCohesionNeighbours = 10;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -40,20 +51,6 @@ public class CPUBoidsManager : MonoBehaviour
     {
         for (int i = 0; i < BoidCount; i++)
         {
-            float neigborRadius = 6f;
-            float separationRadius = 3f;
-            float maxSpeed = 2f;
-            float maxForce = 0.03f;
-
-            float separationWeight = 0.15f;
-            float alignmentWeight = 0.02f;
-            float cohesionWeight = 0.003f;
-
-            int maxSeparationNeighbords = 20;
-            int maxAlignmentNeighbords = 10;
-            int maxCohesionNeighbords = 10;
-
-
             Boid currBoid = Boids[i];
 
             // Update boid
@@ -61,86 +58,74 @@ public class CPUBoidsManager : MonoBehaviour
             Vector3 alignment = Vector3.zero;
             Vector3 cohesion = Vector3.zero;
 
-
             int sepCount = 0;
             int aliCount = 0;
             int cohCount =0;
 
-            //Neighbords search
+            // Neighbour search
             for (int j = 0; j < BoidCount; j++)
             {
-                if (i == j ) continue;
+                if (i == j) continue;
                 {
                     Boid other = Boids[j];
                     float dist = Vector3.Distance(currBoid.Position, other.Position);
 
-                    if (dist < neigborRadius)
+                    if (dist < NeighbourRadius)
                     {
-
                         // Separation
-                        if(dist < separationRadius && sepCount < maxSeparationNeighbords)
+                        if (dist < SeparationRadius && sepCount < MaxSeparationNeighbours)
                         {
-                            separation += (currBoid.Position - other.Position).normalized * (separationRadius - dist) / separationRadius;
+                            separation += (currBoid.Position - other.Position).normalized * (SeparationRadius - dist) / SeparationRadius;
                             sepCount++;
                         }
 
-                        //Alignment
-                        if(dist <neigborRadius && aliCount < maxAlignmentNeighbords)
+                        // Alignment
+                        if (dist < NeighbourRadius && aliCount < MaxAlignmentNeighbours)
                         {
                             alignment += other.Velocity;
                             aliCount++;
                         }
 
-                        //Cohesion
-                        if (dist < neigborRadius && cohCount < maxCohesionNeighbords)
+                        // Cohesion
+                        if (dist < NeighbourRadius && cohCount < MaxCohesionNeighbours)
                         {
                             cohesion += other.Position;
                             cohCount++;
                         }
-
                     }
- 
-
                 }
-
-
             }
 
             // Compute final forces
             if (aliCount > 0)
             {
-
                 alignment /= aliCount;
                 alignment -= currBoid.Velocity;
             }
 
             if (cohCount > 0)
             {
-
                 cohesion /= cohCount;
                 cohesion -= currBoid.Position;
             }
 
-            Vector3 force = separationWeight * separation
-                                + alignmentWeight * alignment
-                                + cohesionWeight * cohesion;
+            Vector3 force = SeparationWeight * separation       
+                          + AlignmentWeight  * alignment
+                          + CohesionWeight   * cohesion;
 
+            // Limit force 
+            if (force.magnitude > MaxForce)
+                force = force.normalized * MaxForce;
 
-            //limit force 
-            if (force.magnitude > maxForce)
-                force = force.normalized * maxForce;
-
-
-            // update velocity 
+            // Update velocity 
             currBoid.Velocity += force;
-            if (currBoid.Velocity.magnitude > maxSpeed)
-                currBoid.Velocity = currBoid.Velocity.normalized * maxSpeed;
+            if (currBoid.Velocity.magnitude > MaxSpeed)
+                currBoid.Velocity = currBoid.Velocity.normalized * MaxSpeed;
 
-            //update pos
+            // Update pos
             currBoid.Position += currBoid.Velocity * Time.deltaTime;
 
-
-            //synchronize GameObject
+            // Synchronize GameObject
             currBoid.Object.transform.position = currBoid.Position;
             if (currBoid.Velocity != Vector3.zero)
                 currBoid.Object.transform.rotation = Quaternion.LookRotation(currBoid.Velocity);
