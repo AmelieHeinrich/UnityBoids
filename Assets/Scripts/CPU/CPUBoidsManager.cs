@@ -1,8 +1,17 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CPUBoidsManager : MonoBehaviour
 {
+    enum BoidType
+    {
+        None,
+        Tardy,
+        Enthusiast,
+        Clingy
+    };
+
     struct Boid
     {
         public Vector3 Position;
@@ -10,6 +19,7 @@ public class CPUBoidsManager : MonoBehaviour
         public Vector3 Velocity;
         public Vector3 Acceleration;
         public GameObject Object;
+        public BoidType Type;
     };
 
     [SerializeField] public int BoidCount = 3000;
@@ -38,9 +48,12 @@ public class CPUBoidsManager : MonoBehaviour
         for (int i = 0; i < BoidCount; i++)
         {
             Boid boid = new Boid();
-            boid.Position = this.gameObject.transform.position + new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
-            boid.Velocity = Random.insideUnitSphere.normalized;
+            boid.Position = this.gameObject.transform.position + new Vector3(UnityEngine.Random.Range(-1.0f, 1.0f), UnityEngine.Random.Range(-1.0f, 1.0f), UnityEngine.Random.Range(-1.0f, 1.0f));
+            boid.Velocity = UnityEngine.Random.insideUnitSphere.normalized;
             boid.Object = BoidPool.Get();
+
+            Array values = Enum.GetValues(typeof(BoidType));
+            boid.Type = (BoidType)values.GetValue(UnityEngine.Random.Range(0, values.Length));
 
             Boids.Add(boid);
         }
@@ -60,7 +73,9 @@ public class CPUBoidsManager : MonoBehaviour
 
             int sepCount = 0;
             int aliCount = 0;
-            int cohCount =0;
+            int cohCount = 0;
+
+            float boidSpecificSepRadius = currBoid.Type == BoidType.Clingy ? SeparationRadius / 2.0f : SeparationRadius;
 
             // Neighbour search
             for (int j = 0; j < BoidCount; j++)
@@ -73,9 +88,9 @@ public class CPUBoidsManager : MonoBehaviour
                     if (dist < NeighbourRadius)
                     {
                         // Separation
-                        if (dist < SeparationRadius && sepCount < MaxSeparationNeighbours)
+                        if (dist < boidSpecificSepRadius && sepCount < MaxSeparationNeighbours)
                         {
-                            separation += (currBoid.Position - other.Position).normalized * (SeparationRadius - dist) / SeparationRadius;
+                            separation += (currBoid.Position - other.Position).normalized * (boidSpecificSepRadius - dist) / boidSpecificSepRadius;
                             sepCount++;
                         }
 
@@ -109,9 +124,12 @@ public class CPUBoidsManager : MonoBehaviour
                 cohesion -= currBoid.Position;
             }
 
-            Vector3 force = SeparationWeight * separation       
-                          + AlignmentWeight  * alignment
-                          + CohesionWeight   * cohesion;
+            float boidSpecificAliWeight = currBoid.Type == BoidType.Enthusiast ? 0.3f : 1.0f;
+            float boidSpecificCohWeight = currBoid.Type == BoidType.Tardy ? 0.3f : 1.0f;
+
+            Vector3 force = SeparationWeight * separation
+                          + AlignmentWeight  * alignment  * boidSpecificAliWeight
+                          + CohesionWeight   * cohesion   * boidSpecificCohWeight;
 
             // Limit force 
             if (force.magnitude > MaxForce)
