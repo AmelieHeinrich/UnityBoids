@@ -66,6 +66,7 @@ public class CPUBoidsManager : MonoBehaviour
             int aliCount = 0;
             int cohCount =0;
 
+            //Neighbords search
             for (int j = 0; j < BoidCount; j++)
             {
                 if (i == j ) continue;
@@ -105,6 +106,7 @@ public class CPUBoidsManager : MonoBehaviour
 
             }
 
+            // Compute final forces
             if (aliCount > 0)
             {
 
