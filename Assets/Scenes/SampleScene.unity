@@ -153,6 +153,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoidCount: 100
   BoidPrefab: {fileID: 6926173899162877058, guid: e1bd074d80633f249ac463e78412dfbc, type: 3}
+  NeighbourRadius: 10
+  SeparationRadius: 2
+  MaxSpeed: 10
+  MaxForce: 0.67
+  SeparationWeight: 0.15
+  AlignmentWeight: 0.02
+  CohesionWeight: 0.003
+  MaxSeparationNeighbours: 20
+  MaxAlignmentNeighbours: 10
+  MaxCohesionNeighbours: 10
 --- !u!135 &17703549
 SphereCollider:
   m_ObjectHideFlags: 0
