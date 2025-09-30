@@ -4,7 +4,7 @@ using UnityEngine.Rendering;
 public class LimitArea : MonoBehaviour
 
 {
-    [SerializeField] private float radius = 20f;
+    public float radius = 20f;
     [SerializeField] private float buffer = 5.5f;   // buffer zone before the edge 
     [SerializeField] private float strength = 25f; // repulsion force
     private CPUBoidsManager boid;
