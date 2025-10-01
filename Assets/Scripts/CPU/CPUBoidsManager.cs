@@ -26,7 +26,7 @@ public class CPUBoidsManager : MonoBehaviour
     [SerializeField] public GameObject BoidPrefab;
     [SerializeField] public GameObjectPool BoidPool;
     [SerializeField] public LimitArea BoidLimitArea;
-    [SerializeField] public LeaderBoid LeaderBoid;
+    public LeaderBoid CurrentLeaderBoid;
     private List<Boid> Boids;
 
     [SerializeField] public float NeighbourRadius = 6f;
@@ -59,6 +59,9 @@ public class CPUBoidsManager : MonoBehaviour
 
             Boids.Add(boid);
         }
+
+        CurrentLeaderBoid = Boids[0].Object.AddComponent<LeaderBoid>();
+        CurrentLeaderBoid.BoidLimitArea = BoidLimitArea;
     }
 
     // Update is called once per frame
@@ -136,7 +139,7 @@ public class CPUBoidsManager : MonoBehaviour
             Vector3 repulsion = BoidLimitArea.GetRepulsionForce(currBoid.Position);
             currBoid.Velocity += repulsion * Time.deltaTime;
 
-            Vector3 toLeader = (LeaderBoid.targetPosition - currBoid.Position).normalized;
+            Vector3 toLeader = (CurrentLeaderBoid.targetPosition - currBoid.Position).normalized;
             float learderWeight = 0.1f;
             force += toLeader * learderWeight;
 
@@ -144,7 +147,7 @@ public class CPUBoidsManager : MonoBehaviour
             if (force.magnitude > MaxForce)
                 force = force.normalized * MaxForce;
 
-            // Update velocity 
+            // Update velocity
             currBoid.Velocity += force;
             if (currBoid.Velocity.magnitude > MaxSpeed)
                 currBoid.Velocity = currBoid.Velocity.normalized * MaxSpeed;

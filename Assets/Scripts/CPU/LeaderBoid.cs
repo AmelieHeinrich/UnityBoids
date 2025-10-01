@@ -3,14 +3,9 @@ using UnityEngine;
 
 public class LeaderBoid : MonoBehaviour
 {
-    private LimitArea BoidLimitArea;
-
+    [SerializeField] public LimitArea BoidLimitArea;
     [SerializeField] private float speed = 2f; 
-    [SerializeField] private float Changetimer = 3f;
-
-    [HideInInspector] public Vector3 targetPosition;
-
-    private float timer;
+    [SerializeField] public Vector3 targetPosition;
 
     void Start()
     {
@@ -20,12 +15,11 @@ public class LeaderBoid : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= Changetimer)
-        {
-            timer = 0f;
+        float targetDistance = Vector3.Distance(transform.position, targetPosition);
+        Debug.Log(targetDistance);
+        bool inRadiusOfTarget = targetDistance < 5f;
+        if (inRadiusOfTarget)
             SetRandomTarget();
-        }
 
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 
@@ -35,6 +29,11 @@ public class LeaderBoid : MonoBehaviour
 
     private void SetRandomTarget()
     {
-        targetPosition = BoidLimitArea.transform.position + Random.insideUnitSphere * BoidLimitArea.radius;
+        targetPosition = BoidLimitArea.transform.position + Random.insideUnitSphere * Random.Range(1.0f, BoidLimitArea.radius);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(targetPosition, 5f);
     }
 }
