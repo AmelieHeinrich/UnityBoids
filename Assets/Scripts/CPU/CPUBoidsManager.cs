@@ -26,6 +26,7 @@ public class CPUBoidsManager : MonoBehaviour
     [SerializeField] public GameObject BoidPrefab;
     [SerializeField] public GameObjectPool BoidPool;
     [SerializeField] public LimitArea BoidLimitArea;
+    [SerializeField] public BoidDetectionScene DetectionScene;
     public LeaderBoid CurrentLeaderBoid;
     private List<Boid> Boids;
 
@@ -86,9 +87,17 @@ public class CPUBoidsManager : MonoBehaviour
             for (int j = 0; j < BoidCount; j++)
             {
                 if (i == j) continue;
+                else
                 {
                     Boid other = Boids[j];
                     float dist = Vector3.Distance(currBoid.Position, other.Position);
+
+                    foreach (ICollider collider in DetectionScene.Colliders)
+                    {
+                        float distance = collider.DistanceWithSphere(other.Position, NeighbourRadius);
+                        // Depending on distance, add force
+                        // TODO: Coralie
+                    }
 
                     if (dist < NeighbourRadius)
                     {
