@@ -6,6 +6,7 @@ public class LeaderBoid : MonoBehaviour
     [SerializeField] public LimitArea BoidLimitArea;
     [SerializeField] private float speed = 2f; 
     [SerializeField] public Vector3 targetPosition;
+    [SerializeField] public BoidDetectionScene BoidScene;
 
     void Start()
     {
@@ -29,7 +30,15 @@ public class LeaderBoid : MonoBehaviour
 
     private void SetRandomTarget()
     {
-        targetPosition = BoidLimitArea.transform.position + Random.insideUnitSphere * Random.Range(1.0f, BoidLimitArea.radius);
+        foreach (ICollider collider in BoidScene.Colliders)
+        {
+            Vector3 newPos = BoidLimitArea.transform.position;
+            while (collider.DistanceWithSphere(newPos, 5f) < 1.0f)
+            {
+                newPos = BoidLimitArea.transform.position + Random.insideUnitSphere * Random.Range(1.0f, BoidLimitArea.radius);
+            }
+            targetPosition = newPos;
+        }
     }
 
     private void OnDrawGizmos()

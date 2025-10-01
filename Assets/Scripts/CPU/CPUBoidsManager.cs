@@ -40,6 +40,7 @@ public class CPUBoidsManager : MonoBehaviour
     [SerializeField] public int   MaxSeparationNeighbours = 20;
     [SerializeField] public int   MaxAlignmentNeighbours = 10;
     [SerializeField] public int   MaxCohesionNeighbours = 10;
+    private Vector3 spherePos;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -63,6 +64,7 @@ public class CPUBoidsManager : MonoBehaviour
 
         CurrentLeaderBoid = Boids[0].Object.AddComponent<LeaderBoid>();
         CurrentLeaderBoid.BoidLimitArea = BoidLimitArea;
+        CurrentLeaderBoid.BoidScene = DetectionScene;
     }
 
     // Update is called once per frame
@@ -95,8 +97,18 @@ public class CPUBoidsManager : MonoBehaviour
                     foreach (ICollider collider in DetectionScene.Colliders)
                     {
                         float distance = collider.DistanceWithSphere(other.Position, NeighbourRadius);
-                        // Depending on distance, add force
-                        // TODO: Coralie
+
+                        Vector3 closest = collider.ClosestPointOnSurface(other.Position);
+                        Vector3 dir = (other.Position - closest).normalized;
+
+                        float penetration = -distance;
+                        float repulsionStrength = penetration * 10f;
+                        Vector3 push = dir * repulsionStrength;
+
+                        other.Velocity += push * Time.deltaTime;
+
+                        if (other.Velocity.magnitude > MaxSpeed)
+                            other.Velocity = other.Velocity.normalized * MaxSpeed;
                     }
 
                     if (dist < NeighbourRadius)

@@ -9,6 +9,7 @@ public class IBoxCollider : ICollider
         Vector3 obbCenter = this.transform.position;
         Quaternion invRot = Quaternion.Inverse(this.transform.rotation);
         Vector3 localSphere = invRot * (spherePos - obbCenter);
+
         Vector3 closestLocal = new Vector3(
             Mathf.Clamp(localSphere.x, -HalfExtents.x, HalfExtents.x),
             Mathf.Clamp(localSphere.y, -HalfExtents.y, HalfExtents.y),
@@ -16,9 +17,24 @@ public class IBoxCollider : ICollider
         );
 
         Vector3 deltaLocal = localSphere - closestLocal;
-
         float distLocal = deltaLocal.magnitude;
+
         return distLocal - sphereRadius;
+    }
+
+    public override Vector3 ClosestPointOnSurface(Vector3 spherePos)
+    {
+        Vector3 obbCenter = this.transform.position;
+        Quaternion invRot = Quaternion.Inverse(this.transform.rotation);
+        Vector3 localSphere = invRot * (spherePos - obbCenter);
+
+        Vector3 closestLocal = new Vector3(
+            Mathf.Clamp(localSphere.x, -HalfExtents.x, HalfExtents.x),
+            Mathf.Clamp(localSphere.y, -HalfExtents.y, HalfExtents.y),
+            Mathf.Clamp(localSphere.z, -HalfExtents.z, HalfExtents.z)
+        );
+
+        return obbCenter + this.transform.rotation * closestLocal;
     }
 
     public void OnDrawGizmos()
