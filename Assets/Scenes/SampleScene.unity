@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 660a1564d15a8a140a04552eb1195d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoidCount: 100
+  BoidCount: 1000
   BoidPrefab: {fileID: 6926173899162877058, guid: e1bd074d80633f249ac463e78412dfbc, type: 3}
   BoidLimitArea: {fileID: 2069789650}
   DetectionScene: {fileID: 520059472}
@@ -599,7 +599,7 @@ Transform:
   m_GameObject: {fileID: 1056321517}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.3313638, z: -0, w: 0.9435031}
-  m_LocalPosition: {x: -3.41, y: 1, z: -10}
+  m_LocalPosition: {x: -58.6, y: 1, z: 1.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
