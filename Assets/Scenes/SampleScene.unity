@@ -247,7 +247,7 @@ Transform:
   m_GameObject: {fileID: 17703547}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.31686, y: 0.2218, z: 0.31686}
+  m_LocalPosition: {x: -70.759, y: 0.2218, z: 38.91}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -504,13 +504,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1056321517}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: -0, y: -0.3313638, z: -0, w: 0.9435031}
+  m_LocalPosition: {x: -3.41, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -38.703, z: 0}
 --- !u!1 &2069789649
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,9 +543,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9644550fb1c39848bfd140cfe0dd220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 15
-  buffer: 5
-  strength: 2
+  radius: 20
+  buffer: 5.5
+  strength: 25
 --- !u!135 &2069789651
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -565,7 +565,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.00001
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &2069789652
 MeshRenderer:
@@ -619,7 +619,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2069789649}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 0}
 --- !u!4 &2069789654
 Transform:
   m_ObjectHideFlags: 0
@@ -629,7 +629,7 @@ Transform:
   m_GameObject: {fileID: 2069789649}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -72.27713, y: 0, z: 39.89}
+  m_LocalPosition: {x: -73.4, y: -0.25, z: 39.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
