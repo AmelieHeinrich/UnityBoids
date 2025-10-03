@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 660a1564d15a8a140a04552eb1195d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoidCount: 100
+  BoidCount: 200
   BoidPrefab: {fileID: 6926173899162877058, guid: e1bd074d80633f249ac463e78412dfbc, type: 3}
   BoidLimitArea: {fileID: 2069789650}
   DetectionScene: {fileID: 520059472}
@@ -328,8 +328,8 @@ Transform:
   m_GameObject: {fileID: 590922028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.36, y: -1.4, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 6.36, y: -1.4, z: -0.8}
+  m_LocalScale: {x: 0.023289636, y: 0.018884, z: 0.12726305}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 520059471}
@@ -346,7 +346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f9fcd686d77df84487731026f637830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HalfExtents: {x: 0.53, y: 13.45, z: 40.2}
+  HalfExtents: {x: 0.53, y: 10, z: 25.2}
 --- !u!1 &813302402
 GameObject:
   m_ObjectHideFlags: 0
@@ -723,7 +723,7 @@ Transform:
   m_GameObject: {fileID: 2069789649}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -73.4, y: -0.25, z: 39.06}
+  m_LocalPosition: {x: -73.4, y: -0.25, z: 42.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
